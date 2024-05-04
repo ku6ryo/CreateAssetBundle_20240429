@@ -1,0 +1,1 @@
+This is test for building Unity asset bundles by script.
