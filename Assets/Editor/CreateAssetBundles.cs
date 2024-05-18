@@ -38,6 +38,9 @@ public class CreateAssetBundles
                 BuildAssetBundleForTarget(path, filenameIOS, BuildTarget.iOS);
                 BuildAssetBundleForTarget(path, filenameWin, BuildTarget.StandaloneWindows);
                 BuildAssetBundleForTarget(path, filenameMac, BuildTarget.StandaloneOSX);
+            } catch (Exception e) {
+                Debug.LogException(e);    
+                Debug.LogError("Build failed for some platforms.");
             } finally {
                 selectedObj.name = goNameOfPrefab;
             }

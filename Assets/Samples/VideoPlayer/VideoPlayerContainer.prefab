@@ -183,7 +183,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4275052956025767803}
   m_Layer: 0
-  m_Name: Container
+  m_Name: VideoPlayerContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
