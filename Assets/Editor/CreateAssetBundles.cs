@@ -22,6 +22,8 @@ public class CreateAssetBundles
         // Check if it is a prefab
         var isPrefab = PrefabUtility.GetPrefabAssetType(selectedObj) == PrefabAssetType.Regular;
         if (isPrefab) {
+            // Get current build target
+            var initialBuildTarget = EditorUserBuildSettings.activeBuildTarget;
             string path = AssetDatabase.GetAssetPath(selectedObj);
             Debug.Log($"Building an asset bundle for {path}");
             var uuid = Guid.NewGuid().ToString();
@@ -39,12 +41,21 @@ public class CreateAssetBundles
             } finally {
                 selectedObj.name = goNameOfPrefab;
             }
+            EditorUserBuildSettings.SwitchActiveBuildTarget(
+                BuildPipeline.GetBuildTargetGroup(initialBuildTarget),
+                initialBuildTarget
+            );
+            Debug.Log($"Asset bundle built for {path}. Asset ID: {uuid}");
         } else {
             Debug.Log("Selected object is not a regular prefab");
         }
     }
 
-    static void BuildAssetBundleForTarget(string assetPath, string filename, BuildTarget target)
+    static void BuildAssetBundleForTarget(
+        string assetPath,
+        string filename,
+        BuildTarget target
+    )
     {
         AssetBundleBuild[] buildMap = new AssetBundleBuild[1];
         buildMap[0].assetBundleName = filename;
@@ -55,6 +66,8 @@ public class CreateAssetBundles
         {
             Directory.CreateDirectory(outputDir);
         }
+        var targetGroup = BuildPipeline.GetBuildTargetGroup(target);
+        EditorUserBuildSettings.SwitchActiveBuildTarget(targetGroup, target);
         BuildPipeline.BuildAssetBundles(outputDir, buildMap, BuildAssetBundleOptions.None, target);
     }
 }
